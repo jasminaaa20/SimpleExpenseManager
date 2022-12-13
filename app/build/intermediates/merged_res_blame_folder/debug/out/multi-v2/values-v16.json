@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\jakma\\Downloads\\SimpleExpenseManager-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\jakma\\.gradle\\caches\\transforms-2\\files-2.1\\22201284f06052f57e5af9bcb65a52a3\\appcompat-v7-26.1.0\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\jakma\\.gradle\\caches\\transforms-2\\files-2.1\\13b1d2c16aaec09767fc520178d89365\\appcompat-v7-26.1.0\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\jakma\\.gradle\\caches\\transforms-2\\files-2.1\\45642fd0a6138345441bf0a6b6a7b84e\\support-compat-26.1.0\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\jakma\\.gradle\\caches\\transforms-2\\files-2.1\\5c3f062e7bec9abdd32171cdc2f6d1e1\\support-compat-26.1.0\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

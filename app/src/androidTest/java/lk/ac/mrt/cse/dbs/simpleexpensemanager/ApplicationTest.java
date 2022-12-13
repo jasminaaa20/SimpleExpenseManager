@@ -16,14 +16,59 @@
 
 package lk.ac.mrt.cse.dbs.simpleexpensemanager;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.content.Context;
+
+import androidx.test.core.app.ApplicationProvider;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistentExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.exception.ExpenseManagerException;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.InvalidAccountException;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Transaction;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
-    }
+public class ApplicationTest {
+     private ExpenseManager expenseManager;
+
+     @Before
+     public void setUpPersistentStorage() throws ExpenseManagerException {
+          Context context = ApplicationProvider.getApplicationContext();
+          expenseManager = new PersistentExpenseManager(context);
+     }
+
+     @Test
+     public void testAddAccount () {
+          expenseManager.addAccount("0000", "Test Bank", "Test Name", 1000.0);
+          assertTrue(expenseManager.getAccountNumbersList().contains("0000"));
+     }
+
+     @Test
+     public void testAddTransaction() throws InvalidAccountException {
+          String accNo = "0000";
+          ExpenseType expenseType = ExpenseType.INCOME;
+
+          expenseManager.updateAccountBalance(accNo, 1, 0, 2022, expenseType, "100.0");
+
+          List<Transaction> transactionList = expenseManager.getTransactionLogs();
+          Transaction lastTransaction = transactionList.get(transactionList.size() - 1);
+
+          SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+          String dateStr = dateFormat.format(lastTransaction.getDate());
+
+          assertTrue(dateStr.equals("01-01-2022") && lastTransaction.getAccountNo().equals(accNo) && lastTransaction.getExpenseType().equals(expenseType) && lastTransaction.getAmount() == 100.0);
+          assertEquals(1100.0, expenseManager.getAccountsDAO().getAccount(accNo).getBalance(), 0.0);
+     }
+
 }
