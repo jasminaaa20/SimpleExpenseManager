@@ -27,10 +27,13 @@ import android.support.v7.widget.Toolbar;
 
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
-import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.InMemoryDemoExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistentExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl.SQLiteContext;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl.SQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
     private ExpenseManager expenseManager;
+    private SQLiteHelper SQLiteHelper;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -51,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize the database
+        SQLiteHelper = new SQLiteHelper(this);
+        SQLiteContext.initDatabase(SQLiteHelper);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         /***  Begin generating dummy data for In-Memory implementation  ***/
-        expenseManager = new InMemoryDemoExpenseManager();
+        expenseManager = new PersistentExpenseManager();
         /*** END ***/
     }
 
@@ -114,5 +121,11 @@ public class MainActivity extends AppCompatActivity {
                     return getString(R.string.label_manage);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        SQLiteHelper.close();
+        super.onDestroy();
     }
 }
